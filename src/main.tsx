@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <Home /> },
-      { path: 'country/:id', element: <Details/> }
+      { path: 'country/:nameParam', element: <Details/> }
     ],
   },
 ]);

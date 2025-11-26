@@ -83,7 +83,8 @@ export function toCountryCard(countryData: RestCountryGrid): CountryCard {
 }
 
 export async function getCountrybyName(name: string): Promise<RestCountryDetail> {
-    const res = await fetch(`${API}/name/${name}?fullText=true&fields=${detailFields}`);
+    console.log(name);
+    const res = await fetch(`${API}/name/${encodeURIComponent(name)}?fullText=true&fields=${detailFields}`);
 
     if (!res.ok) {
         throw new Error('Failed to fetch country!');

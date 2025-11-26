@@ -2,7 +2,7 @@ import type { CountryCard as CountryCardType } from "../services/countries";
 import { Link } from 'react-router-dom';
 
 export default function CountryCard({ card }: {card: CountryCardType}) {
-    const id = card.code ?? encodeURIComponent(card.name);
+    const id = encodeURIComponent(card.name);
     
 
     return (
