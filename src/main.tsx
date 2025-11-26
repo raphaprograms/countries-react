@@ -2,14 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
+import Home from './pages/Home';
 
-function HomeStub() {
-  return (
-    <div>
-      Home
-    </div>
-  )
-}
+// function HomeStub() {
+//   return (
+//     <div>
+//       Home
+//     </div>
+//   )
+// }
 
 function DetailsStub() {
   return (
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
-      { index: true, element: <HomeStub /> },
+      { index: true, element: <Home /> },
       { path: 'country/:id', element: <DetailsStub /> }
     ],
   },

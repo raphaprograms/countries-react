@@ -22,13 +22,13 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         setTheme(prev => {
             const next = prev === 'dark' ? 'light' : 'dark';
             localStorage.setItem('theme', next);
+            console.log(next);
             return next;
         });
     }
 
-    const value = useMemo(() => {
-        { theme, toggleTheme }
-    }, [theme])
+    const value = useMemo(
+        () => ({ theme, toggleTheme }), [theme])
 
     return (
         <ThemeContext.Provider value={value}>
