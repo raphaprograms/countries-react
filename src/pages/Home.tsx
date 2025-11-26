@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { getAllCountries, toCountryCard, type CountryCard } from "../services/countries";
+import CountryGrid from "../components/CountryGrid";
 
 
 export default function Home() {
@@ -20,7 +21,7 @@ export default function Home() {
                     setCards(mapped)
                 }
 
-            } catch (error) {
+            } catch (error: any) {
                 if (mounted) {
                     setError(error?.message ?? 'Failed to fetch countries');
                 }
@@ -35,6 +36,16 @@ export default function Home() {
             mounted = false;
         }
     }, [])
+
+     const visible = useMemo(() => {
+        const searchCountries = search.trim().toLowerCase();
+        const searchRegion = region.trim();
+        return cards.filter(card => {
+            const matchName = searchCountries === '' || card.name.toLowerCase().includes(searchCountries);
+            const matchRegion = searchRegion === '' || card.region === region;
+            return matchName && matchRegion;
+        })
+    }, [cards, search, region]);
 
     if (loading) {
         return (
@@ -65,6 +76,20 @@ export default function Home() {
                     <option value="Oceania">Oceania</option>
                  </select>
             </section>
+            <section id="grid" className="grid">
+                <CountryGrid cards={visible}/>
+                {visible.map(country => (
+                    <div key={country.code ?? country.name} className="card">
+                        <img className="flag" src={country.flagsSrc} alt={country.flagAlt} />
+                        <div className="card-body">
+                            <h2 className="name">{country.name}</h2>
+                            <p className="population">Population: {country.population ?? '-'}</p>
+                            <p className="region">Region: {country.region ?? 'not found'}</p>
+                            <p className="capital">Capital: {country.capital ?? 'not found'}</p>
+                        </div>
+                    </div>
+                ))}
+            </section> 
             <div>
                 Cards: {cards.length}
             </div>
