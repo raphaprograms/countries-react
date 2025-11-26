@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 type Theme = 'light' | 'dark';
 type ThemeContextValue = { 
@@ -9,10 +9,27 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const value: ThemeContextValue = {
-        theme: 'light',
-        toggleTheme: () => {},
-    };
+    const [theme, setTheme] = useState<Theme>(() => {
+        const saved = localStorage.getItem('theme') as Theme | null;
+        return saved ?? 'light';
+    }); 
+
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => {
+            const next = prev === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', next);
+            return next;
+        });
+    }
+
+    const value = useMemo(() => {
+        { theme, toggleTheme }
+    }, [theme])
+
     return (
         <ThemeContext.Provider value={value}>
             {children}
